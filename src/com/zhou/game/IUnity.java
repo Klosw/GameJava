@@ -57,7 +57,7 @@ public abstract class IUnity {
 		u(90), d(270), l(180), r(0),
 		/** 还没有给定方向 */
 		o(-1),
-		/** 表示出边界了 */
+		/** 表示出边界了  或者被击中 */
 		t(-2);
 		int i;
 
@@ -163,5 +163,4 @@ public abstract class IUnity {
 		}
 		this.mDirection = Direction.r;
 	}
-
 }

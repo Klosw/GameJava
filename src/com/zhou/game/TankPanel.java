@@ -30,7 +30,7 @@ public class TankPanel extends JPanel implements KeyListener {
 	// 我的tank发出的子弹集合
 	private final HashSet<Bullet> mHeroBullet = new HashSet<>();
 	// Tank 刷新时间
-	private final int mTimeFoeTank = 10 * 1000;
+	private final int mTimeFoeTank = 5 * 1000;
 	// 按键刷新时间
 	private final int mTimekey = 32;
 	// FPS刷新时间
@@ -98,6 +98,8 @@ public class TankPanel extends JPanel implements KeyListener {
 		this.width = width;
 		this.height = height;
 		hero = new HeroTank(24, 10, 10, width, height);
+		hero.x = (hero.maxx - hero.w) / 2;
+		hero.y = hero.maxy;
 		startThread();
 	}
 
@@ -170,23 +172,20 @@ public class TankPanel extends JPanel implements KeyListener {
 		g.fillRect(0, 0, 400, 300);
 		hero.onDraw(g);
 		// 绘制我的子弹
-		Iterator<Bullet> m = mHeroBullet.iterator();
-		while (m.hasNext()) {
-			Bullet b = m.next();
-			if (b.mDirection != Direction.t) {
-				b.onDraw(g);
-			} else {
-				m.remove();
-			}
-		}
+		paintUnity(mHeroBullet.iterator(), g);
 		// 绘制 敌人坦克
-		Iterator<Tank> m2 = mFoeTank.iterator();
-		while (m2.hasNext()) {
-			Tank b = m2.next();
-			if (b.mDirection != Direction.t) {
-				b.onDraw(g);
+		paintUnity(mFoeTank.iterator(), g);
+
+	}
+
+	// 绘制单位
+	private <T extends IUnity> void paintUnity(Iterator<T> t, Graphics g) {
+		while (t.hasNext()) {
+			IUnity mFoetank = t.next();
+			if (mFoetank.mDirection != Direction.t) {
+				mFoetank.onDraw(g);
 			} else {
-				m.remove();
+				t.remove();
 			}
 		}
 	}
