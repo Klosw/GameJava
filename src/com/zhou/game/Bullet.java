@@ -39,7 +39,7 @@ public class Bullet extends IUnity {
 
 	public Bullet(int w, int h, int x, int y, int mx, int my) {
 		super(w, h, x, y, mx, my);
-		speed = 6;// 默认快点
+		speed = 4;// 默认快点
 	}
 
 	@Override

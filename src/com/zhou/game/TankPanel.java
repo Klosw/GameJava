@@ -27,8 +27,7 @@ public class TankPanel extends JPanel implements KeyListener {
 	private final HashSet<Tank> mFoeTank = new HashSet<>();
 	// 键值存储
 	private final LinkedHashSet<Integer> mKeytmp = new LinkedHashSet<>();
-	// 我的tank发出的子弹集合
-	private final HashSet<Bullet> mHeroBullet = new HashSet<>();
+
 	// Tank 刷新时间
 	private final int mTimeFoeTank = 5 * 1000;
 	// 按键刷新时间
@@ -70,10 +69,7 @@ public class TankPanel extends JPanel implements KeyListener {
 	private void onKeyDownBullet(int keycode) {
 		switch (keycode) {
 		case 32:// 空格键发子弹
-			int[] is = hero.getBulletStartCoordinate();
-			Bullet bu = new Bullet(is[0], is[1], width, height);
-			bu.mDirection = hero.mDirection;
-			mHeroBullet.add(bu);
+			hero.fire();
 			break;
 		}
 	}
@@ -135,29 +131,21 @@ public class TankPanel extends JPanel implements KeyListener {
 			try {
 				int i = 0;
 				for (;;) {// 死线程
-					// 刷新率是 60 FPS
-					TankPanel.this.repaint();
-					Thread.sleep(mTimefps);
 					i++;
 					if (i == Integer.MAX_VALUE)
 						i = 0;
-					if (mKeytmp.size() != 0) {
-						if ((i % ((int) (((mTimekey / mTimefps * 1.0) + 0.6)))) == 0) {
-							// mKeytmp.
-							int cc = 0;
-							Iterator<Integer> m = mKeytmp.iterator();
-							while (m.hasNext()) {// 按键处理这样似乎不好
-								cc = m.next();
-							}
-							onKeyDown(cc);
-						}
-					}
+					paintKeyDown();// 按键
 					if (mFoeTank.size() < mMaxFoe) {
-						if (i * mTimefps > mTimeFoeTank && (i * mTimefps) % mTimeFoeTank == 0) {
+						if (/* i * mTimefps > mTimeFoeTank && */ (i * mTimefps) % mTimeFoeTank == 0) {
 							FoeTank foe = new FoeTank(24, Math.abs(mRandom.nextInt(width)), 0, width, height);
+							foe.speed = 1;
 							mFoeTank.add(foe);
 						}
 					}
+
+					// 刷新率是 60 FPS
+					TankPanel.this.repaint();
+					Thread.sleep(mTimefps);
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -165,14 +153,27 @@ public class TankPanel extends JPanel implements KeyListener {
 		}
 	};
 
+	/**
+	 * 画最后 按键事件
+	 */
+	private void paintKeyDown() {
+		if (mKeytmp.size() != 0) {// 按键
+			// mKeytmp.
+			int cc = 0;
+			Iterator<Integer> m = mKeytmp.iterator();
+			while (m.hasNext()) {// 按键处理这样似乎不好
+				cc = m.next();
+			}
+			onKeyDown(cc);
+		}
+	}
+
 	// 重写paint
 	public void paint(Graphics g) {
 		super.paint(g);
 		g.setColor(Color.black);
 		g.fillRect(0, 0, 400, 300);
 		hero.onDraw(g);
-		// 绘制我的子弹
-		paintUnity(mHeroBullet.iterator(), g);
 		// 绘制 敌人坦克
 		paintUnity(mFoeTank.iterator(), g);
 

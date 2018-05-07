@@ -2,6 +2,7 @@ package com.zhou.game;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.HashSet;
 
 /**
  * // 坦克类
@@ -10,6 +11,8 @@ import java.awt.Graphics;
  *
  */
 public class Tank extends IUnity {
+	// 我的tank发出的子弹集合
+	private final HashSet<Bullet> mBullet = new HashSet<>();
 
 	public Tank(int w, int h, int x, int y, int mx, int my) {
 		super(getWW(w), h, x, y, mx - h, my - h * 2 + getWW(w) / 4 + 1);// 更改tank实际位置
@@ -29,7 +32,7 @@ public class Tank extends IUnity {
 	@Override
 	public void onDraw(Graphics g) {
 		this.DrawTank(g);
-
+		paintUnity(mBullet.iterator(), g);
 	}
 
 	// 子弹开始位置
@@ -208,4 +211,15 @@ public class Tank extends IUnity {
 			break;
 		}
 	}
+
+	/**
+	 * 开火方法
+	 */
+	public void fire() {
+		int[] is = this.getBulletStartCoordinate();
+		Bullet bu = new Bullet(is[0], is[1], maxx + w, maxy + y);
+		bu.mDirection = this.mDirection;
+		mBullet.add(bu);
+	}
+
 }

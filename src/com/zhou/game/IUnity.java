@@ -1,6 +1,7 @@
 package com.zhou.game;
 
 import java.awt.Graphics;
+import java.util.Iterator;
 
 /**
  * 单位类
@@ -34,7 +35,7 @@ public abstract class IUnity {
 	// 是否自动运行
 	protected boolean autorun = true;
 	// 速度
-	protected int speed = 5;
+	protected int speed = 2;
 
 	// 表示坦克的宽度
 	protected int w = 0;
@@ -57,7 +58,7 @@ public abstract class IUnity {
 		u(90), d(270), l(180), r(0),
 		/** 还没有给定方向 */
 		o(-1),
-		/** 表示出边界了  或者被击中 */
+		/** 表示出边界了 或者被击中 */
 		t(-2);
 		int i;
 
@@ -163,4 +164,39 @@ public abstract class IUnity {
 		}
 		this.mDirection = Direction.r;
 	}
+
+	/**
+	 * 自动运行 不能运行出界
+	 */
+	public final void autoRunDraw() {
+		switch (mDirection) {
+		case u:
+			u();
+			break;
+		case d:
+			d();
+			break;
+		case l:
+			l();
+			break;
+		case r:
+			r();
+			break;
+		default:
+			break;
+		}
+	}
+
+	// 绘制单位
+	public static <T extends IUnity> void paintUnity(Iterator<T> t, Graphics g) {
+		while (t.hasNext()) {
+			IUnity mFoetank = t.next();
+			if (mFoetank.mDirection != Direction.t) {
+				mFoetank.onDraw(g);
+			} else {
+				t.remove();
+			}
+		}
+	}
+
 }
