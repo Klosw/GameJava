@@ -22,7 +22,7 @@ import com.zhou.game.tankgame.IUnity.Direction;
 public class TankPanel extends JPanel implements KeyListener {
 	private static final long serialVersionUID = -5336208631429308273L;
 	// 按空格键发射子弹 的键值存储
-	private final HashSet<Integer> mKeyFire = new HashSet<>();
+	private int mKeyFire = 0;
 	// 敌人
 	private final HashSet<Tank> mFoeTank = new HashSet<>();
 	// 键值存储
@@ -67,7 +67,7 @@ public class TankPanel extends JPanel implements KeyListener {
 	}
 
 	private void onKeyDownBullet() {
-		if (mKeyFire.size() > 0) {
+		if (mKeyFire > 0) {
 			hero.fire();
 		}
 	}
@@ -130,11 +130,14 @@ public class TankPanel extends JPanel implements KeyListener {
 				int i = 0;
 				for (;;) {// 死线程
 					i++;
+					if (mKeyFire >= 1) {
+						mKeyFire++;
+					}
 					if (i == Integer.MAX_VALUE)
 						i = 0;
 					paintKeyDown();// 按键
-					if (i % 16 == 0)
-						onKeyDownBullet();
+					if (mKeyFire % 16 == 0)
+			 			onKeyDownBullet();
 					if (mFoeTank.size() < mMaxFoe) {
 						if (/* i * mTimefps > mTimeFoeTank && */ (i * mTimefps) % mTimeFoeTank == 0) {
 							FoeTank foe = new FoeTank(24, Math.abs(mRandom.nextInt(width)), 0, width, height);
@@ -197,7 +200,10 @@ public class TankPanel extends JPanel implements KeyListener {
 		if (getMoveKey(e.getKeyCode()))
 			mKeytmp.add(e.getKeyCode());
 		if (e.getKeyCode() == 32) {
-			mKeyFire.add(e.getKeyCode());
+			if (mKeyFire == 0) { // 按下马上就发射子弹
+				hero.fire();
+				mKeyFire = 1;
+			}
 		}
 	}
 
@@ -207,7 +213,7 @@ public class TankPanel extends JPanel implements KeyListener {
 		if (getMoveKey(e.getKeyCode()))
 			mKeytmp.remove(e.getKeyCode());
 		if (e.getKeyCode() == 32) {
-			mKeyFire.remove(e.getKeyCode());
+			mKeyFire = 0;
 		}
 	}
 
