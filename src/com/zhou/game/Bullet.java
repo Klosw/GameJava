@@ -3,6 +3,7 @@ package com.zhou.game;
 import java.awt.Color;
 import java.awt.Graphics;
 
+
 /**
  * // ×Óµ¯Àà
  * 
@@ -10,7 +11,6 @@ import java.awt.Graphics;
  *
  */
 public class Bullet extends IUnity {
-
 	/**
 	 * 
 	 * @param w
