@@ -5,6 +5,8 @@ import java.awt.Toolkit;
 
 import javax.swing.JFrame;
 
+import com.zhou.game.tankgame.TankPanel;
+
 /*
  * 功能:坦克游戏的1.0
  * 1.画出坦克

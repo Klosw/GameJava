@@ -1,4 +1,4 @@
-package com.zhou.game;
+package com.zhou.game.tankgame;
 
 import java.awt.Graphics;
 import java.util.Iterator;

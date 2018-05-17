@@ -1,4 +1,4 @@
-package com.zhou.game;
+package com.zhou.game.tankgame;
 
 public class HeroTank extends Tank {
 	private HeroTank(int w, int h, int x, int y, int mx, int my) {

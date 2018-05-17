@@ -1,4 +1,4 @@
-package com.zhou.game;
+package com.zhou.game.tankgame;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,7 +11,7 @@ import java.util.Random;
 
 import javax.swing.JPanel;
 
-import com.zhou.game.IUnity.Direction;
+import com.zhou.game.tankgame.IUnity.Direction;
 
 /**
  * 画板 用来画画用的
